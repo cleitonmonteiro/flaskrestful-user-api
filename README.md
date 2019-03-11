@@ -10,9 +10,9 @@ Clone o repositório:
 $ git clone https://github.com/cleitonmonteiro/tipsta.git
 ```
 
-Crie o ambiente virtual: do :
+Crie o ambiente virtual:
 ```
-$ python -m venv env
+$ python3 -m venv env
 $ source env/bin/activate
 ```
 
@@ -33,7 +33,7 @@ $ flask db migrate
 $ flask db upgrade
 ```
 
-Agora basta iniar a app:
+Agora basta iniar o app:
 ```
 $ flask run
 ```
