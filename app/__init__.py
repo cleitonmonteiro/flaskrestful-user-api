@@ -15,4 +15,8 @@ def create_app(config_name):
 
     from app import models
 
+    # Blueprints
+    from .auth import auth as auth_blueprint
+    app.register_blueprint(auth_blueprint)
+
     return app
