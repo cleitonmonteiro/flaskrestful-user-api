@@ -65,7 +65,6 @@ def upgrade():
     sa.Column('born_date', sa.Date(), nullable=True),
     sa.Column('sex', sa.String(length=1), nullable=True),
     sa.Column('cpf', sa.String(length=11), nullable=True),
-    sa.Column('user_type', sa.Integer(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('cpf'),
     sa.UniqueConstraint('email')

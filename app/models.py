@@ -12,7 +12,7 @@ class User(db.Model):
 
     __tablename__ = 'users'
 
-    id_user = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     email = db.Column(db.String, unique=True)
     password_hash = db.Column(db.String(256))
@@ -23,9 +23,14 @@ class User(db.Model):
     cpf = db.Column(db.String(11), unique=True)
     #user_type = Column(Integer)
 
+
+
+    ### temos que repensar iso... 
     @property
     def password(self):
-        raise AttributeError("A senha não á um atributo que pode ser lido.")
+        #raise AttributeError("A senha não á um atributo que pode ser lido.")
+        return self.password_hash
+        # aqui teremos que retornar um hash e fazer a verificacao no frontend
 
     @password.setter
     def password(self, password):
