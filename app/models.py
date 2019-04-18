@@ -28,7 +28,7 @@ class User(db.Model):
     ### temos que repensar iso... 
     @property
     def password(self):
-        #raise AttributeError("A senha não á um atributo que pode ser lido.")
+        #raise AttributeError("A senha nao e' um atributo que pode ser lido.")
         return self.password_hash
         # aqui teremos que retornar um hash e fazer a verificacao no frontend
 

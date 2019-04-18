@@ -12,14 +12,20 @@ class Config:
     SQLALCHEMY_ECHO = True
 
 
-class DevelopmentConfig(Config):
+class DevelopmentSQLiteConfig(Config):
     """
-    Development configurations
+    Development with sqlite configurations
     """
 
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
 
+class DevelopmentConfig(Config):
+    """
+    Development with mysql configurations
+    """
+
+    SQLALCHEMY_DATABASE_URI = "mysql://root:rootroot@db/data"
 
 class ProductionConfig(Config):
     """
@@ -43,7 +49,7 @@ class TestingConfig(Config):
     
 
 app_config = {
-    'default': DevelopmentConfig,
+    'default': DevelopmentSQLiteConfig,
     'development': DevelopmentConfig,
     'production': ProductionConfig,
     'testing': TestingConfig
