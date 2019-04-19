@@ -6,8 +6,9 @@ from datetime import datetime
 from app.models import User
 from app import db
 
-class User(Resource):
-
+class User_Register(Resource):
+    def get(self):
+        return jsonify({"mensagem teste":"servidor funcionando"})
     def post(self):
         json_data = request.get_json(force=True)
         if(not json_data):
