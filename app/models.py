@@ -4,6 +4,7 @@ from datetime import date
 
 from app import db
 
+##### no mysql tem que colocar o tamanho de tudo...
 
 class User(db.Model):
     """
@@ -13,11 +14,11 @@ class User(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String)
-    email = db.Column(db.String, unique=True)
+    name = db.Column(db.String(256))
+    email = db.Column(db.String(256), unique=True)
     password_hash = db.Column(db.String(256))
-    institution = db.Column(db.String)
-    phone = db.Column(db.String) # verificar mudanca no formato
+    institution = db.Column(db.String(256))
+    phone = db.Column(db.String(256)) # verificar mudanca no formato
     born_date = db.Column(db.Date) 
     sex = db.Column(db.String(1))
     cpf = db.Column(db.String(11), unique=True)
