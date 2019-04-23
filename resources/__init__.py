@@ -1,4 +1,4 @@
-from user import User_Register,User_Login
+from user import User_CRUD,User_Login
 from flask_restful import Api
 
 def init_resources(app):

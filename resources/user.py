@@ -81,8 +81,8 @@ class User_Login(Resource):
             number_bytes = 256
             token = token_urlsafe(number_bytes)
             redis.hset(email, token)
-            redis.expire(email, 60*)
-            return jsonify{"token":token}
+            redis.expire(email, 60*min_expire_token)
+            return jsonify({"token":token})
         else:
             return jsonify({"error":"password dont check"}) , 400
 
