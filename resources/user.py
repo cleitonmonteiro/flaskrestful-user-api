@@ -36,7 +36,7 @@ class User_CRUD(Resource):
             return jsonify({'message': 'No input data provided'}), 400    
         
         token_verify = json_data["token"]
-        user = User.query.filter_by(email=str(email)).first()
+        user = User.query.filter_by(email=json_data["email"]).first()
         if(user):
             token = redis.hget(user.email)
             # verifica no banco redis 
@@ -80,7 +80,7 @@ class User_Login(Resource):
             min_expire_token = 25
             number_bytes = 256
             token = token_urlsafe(number_bytes)
-            redis.hset(email, token)
+            redis.hset(email, "field1", token)
             redis.expire(email, 60*min_expire_token)
             return jsonify({"token":token})
         else:
