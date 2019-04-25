@@ -11,7 +11,7 @@ services:
     depends_on:
       - db
     networks: 
-      - net
+      - server
   db:
     image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
@@ -24,7 +24,7 @@ services:
     volumes:
       - ./data:/var/lib/mysql/
     networks: 
-      - net
+      - server
   workdb:
     image: phpmyadmin/phpmyadmin
     links:
@@ -34,8 +34,7 @@ services:
     environment: 
       PMA_ARBITRARY: 1  
     networks: 
-
-     - net
+      - server
 
   redis:
     image: 'redis:3.0-alpine'
@@ -44,8 +43,11 @@ services:
       - '6379:6379'
     networks:
       - net
+      - server
 
 networks:
+  server:
+    driver: bridge
   net:
     external:
       name: tipsta-network
