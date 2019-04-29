@@ -7,12 +7,26 @@ from secrets import token_urlsafe
 from app.models import User
 from app import db, redis
 
+def verify_token(json):
+    json_data = request.get_json()
+    email = json_data["email"]
+    token_verify = json_data["token"]
+    token = redis.hget(email, "field1")
+    print("\n\n\n\n\n token1 = %s \n\n\n\n\n token2 = %s" % (token, token_verify))
+    if(token == token_verify):
+        return True
+    return False
+
+def data_json():
+    json_data = request.get_json(force=True)
+    if(not json_data):
+        return jsonify({'message': 'No input data provided'}), 400   
+    return json_data
+
 class User_CRUD(Resource):
         
     def post(self):
-        json_data = request.get_json(force=True)
-        if(not json_data):
-            return jsonify({'message': 'No input data provided'}), 400
+        json_data = data_json()
         aux_data = json_data["born_date"].split("-")
         data = datetime(int(aux_data[0]), int(aux_data[1]), int(aux_data[2]))
         new_user = User(
@@ -30,41 +44,32 @@ class User_CRUD(Resource):
         return 200
 
     def put(self):
-        # se estiver correto ele volta e modifica o usuario
-        json_data = request.get_json(force=True)
-        if(not json_data):
-            return jsonify({'message': 'No input data provided'}), 400    
-        
-        token_verify = json_data["token"]
+        json_data = data_json()
+        if(not verify_token(json_data)):
+            return jsonify({"message":"token incorrect"})
         user = User.query.filter_by(email=json_data["email"]).first()
-        if(user):
-            token = redis.hget(user.email)
-            # verifica no banco redis 
-            if(token == token_verify): # teremos que ver o que realmente pode ser mudado 
-                aux_data = json_data["born_date"].split("-")
-                data = datetime(int(aux_data[0]), int(aux_data[1]), int(aux_data[2]))
-                user.name=json_data["name"]
-                user.email=json_data["email"]
-                user.password=json_data["password"]
-                user.institution=json_data["institution"]
-                user.phone=json_data["phone"]
-                user.born_date=data
-                user.sex=json_data["sex"]
-                user.cpf=json_data["cpf"]
-                db.session.add(user)
-                db.session.commit()
-            return 200
-        else:
-            return jsonify({"error":"este email nao existe"})
-
-    def delete(self):
-        json_data = request.get_json(force=True)
-        if(not json_data):
-            return jsonify({'message': 'No input data provided'}), 400
-        token = json_data["token"]
-        ###### continua depois...
+        aux_data = json_data["born_date"].split("-")
+        data = datetime(int(aux_data[0]), int(aux_data[1]), int(aux_data[2]))
+        user.name=json_data["name"]
+        user.email=json_data["novoemail"]
+        user.password=json_data["password"]
+        user.institution=json_data["institution"]
+        user.phone=json_data["phone"]
+        user.born_date=data
+        user.sex=json_data["sex"]
+        user.cpf=json_data["cpf"]
+        db.session.add(user)
+        db.session.commit()
+        return 200
         
-
+    def delete(self):
+        json_data = data_json()
+        if(not verify_token(json_data)):
+            return jsonify({"message":"token incorrect"})
+        user = User.query.filter_by(email=json_data["email"]).first()
+        db.session.delete(user)
+        db.session.commit()
+        return 200
 
 class User_Login(Resource):
 
