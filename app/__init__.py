@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_redis import Redis
+from flask_cors import CORS
 
 from config import app_config
 
@@ -10,6 +11,7 @@ redis = Redis()
 
 def create_app(config_name):
     app = Flask(__name__)
+    CORS(app)
     app.config.from_object(app_config[config_name])
 
     app.config['REDIS_HOST'] = 'redis'

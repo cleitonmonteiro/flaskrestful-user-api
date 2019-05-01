@@ -12,7 +12,6 @@ def verify_token(json):
     email = json_data["email"]
     token_verify = json_data["token"]
     token = redis.hget(email, "field1")
-    print("\n\n\n\n\n token1 = %s \n\n\n\n\n token2 = %s" % (token, token_verify))
     if(token == token_verify):
         return True
     return False
@@ -74,9 +73,7 @@ class User_CRUD(Resource):
 class User_Login(Resource):
 
     def post(self):
-        json_data = request.get_json(force=True)
-        if(not json_data):
-            return jsonify({'message': 'No input data provided'}), 400
+        json_data = data_json()
         
         email = json_data["email"]
         password = json_data["password"]
