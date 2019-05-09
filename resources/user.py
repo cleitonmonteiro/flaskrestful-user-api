@@ -79,6 +79,9 @@ class User_Login(Resource):
         password = json_data["password"]
         user = User.query.filter_by(email=email).first()
         if(user.verify_password(password)):
+            if(redis.hexists(email, "field1")):
+                token = redis.hget(email, "field1")
+                return jsonify({"token":token})
             min_expire_token = 25
             number_bytes = 256
             token = token_urlsafe(number_bytes)
