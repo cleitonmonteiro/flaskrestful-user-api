@@ -23,6 +23,22 @@ def data_json():
     return json_data
 
 class User_CRUD(Resource):
+
+    def get(self):
+        json_data = data_json()
+        if(not verify_token(json_data)):
+            return jsonify({"message":"token incorrect"})
+        user = User.query.filter_by(email=json_data["email"]).first()
+        userdict = {    'id': user.id,
+                        'name': user.name,
+                        'institution': user.institution,
+                        'phone' : user.phone,
+                        'born_date' : user.born_date,
+                        'sex' : user.sex,
+                        'cpf' : user.cpf
+
+        }
+        return jsonify(userdict)
         
     def post(self):
         json_data = data_json()
